@@ -198,4 +198,20 @@
     <string name="input_exception">Неверный формат ввода</string>
     <string name="subject_exception">Нет данных по предмету</string>
     <string name="subject_param">subject</string>
+    <string name="mark_info">Ваш результат: </string>
+    <string name="ready_info">Ваша подготовленность к экзамену: </string>
+    <string name="good">Высокая</string>
+    <string name="normal">Средняя</string>
+    <string name="low">Низкая</string>
+    <integer name="maxm">68</integer>
+    <integer name="minm">23</integer>
+
+    <integer name="maxr">73</integer>
+    <integer name="minr">22</integer>
+
+    <integer name="maxi">84</integer>
+    <integer name="mini">34</integer>
+
+    <integer name="maxp">62</integer>
+    <integer name="minp">32</integer>
 </resources>
