@@ -197,7 +197,11 @@
     <string name="hint">Введите первичный балл</string>
     <string name="input_exception">Неверный формат ввода</string>
     <string name="subject_exception">Нет данных по предмету</string>
+    <string name="empty_exception">Нет результата для сохранения</string>
+    <string name="save_info">Сохранено</string>
     <string name="subject_param">subject</string>
+    <string name="date_param">date</string>
+    <string name="mark_param">mark</string>
     <string name="mark_info">Ваш результат: </string>
     <string name="ready_info">Ваша подготовленность к экзамену: </string>
     <string name="good">Высокая</string>

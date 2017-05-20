@@ -17,8 +17,8 @@
         </activity>
         <activity
             android:name=".SubjectActivity"
-            android:label="@string/title_activity_subject"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".StatisticsActivity"></activity>
     </application>
 
 </manifest>
