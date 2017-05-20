@@ -36,20 +36,24 @@ public class SubjectActivity extends AppCompatActivity implements TextView.OnEdi
     int min, max;
     String subject;
     int mark;
+    ResourceProvider resourceProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject);
+
+        resourceProvider=new ResourceProvider(getApplicationContext());
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         Intent intent=getIntent();
         subject=intent.getStringExtra(getString(R.string.subject_param));
         try {
-            results = getResources().getIntArray(getArrayId(subject));
-            min=getResources().getInteger(getMin(subject));
-            max=getResources().getInteger(getMax(subject));
+            results = resourceProvider.getSubjectResultArray(subject);
+            min=resourceProvider.getMin(subject);
+            max=resourceProvider.getMax(subject);
         }
         catch (Resources.NotFoundException e){
             Toast.makeText(this, getString(R.string.subject_exception), Toast.LENGTH_SHORT).show();
@@ -74,17 +78,15 @@ public class SubjectActivity extends AppCompatActivity implements TextView.OnEdi
         if (i==EditorInfo.IME_ACTION_GO){
             try {
                 int request = Integer.parseInt(requestField.getText().toString());
-                if (request<results.length){
-                    mark=results[request];
-                    currentProgress.setProgressWithAnimation(mark, 2000);
-                    markInfo.setText(getString(R.string.mark_info)+mark);
-                    readyInfo.setText(getString(R.string.ready_info)+checkProgress(mark));
-                }
-                else{
-                    Toast.makeText(this, getString(R.string.input_exception), Toast.LENGTH_SHORT).show();
-                }
+                mark=results[request];
+                currentProgress.setProgressWithAnimation(mark, 2000);
+                markInfo.setText(getString(R.string.mark_info)+mark);
+                readyInfo.setText(getString(R.string.ready_info)+resourceProvider.getProgressInfo(mark, max, min));
             }
             catch(NumberFormatException e){
+                Toast.makeText(this, getString(R.string.input_exception), Toast.LENGTH_SHORT).show();
+            }
+            catch (ArrayIndexOutOfBoundsException e){
                 Toast.makeText(this, getString(R.string.input_exception), Toast.LENGTH_SHORT).show();
             }
         }
@@ -95,7 +97,6 @@ public class SubjectActivity extends AppCompatActivity implements TextView.OnEdi
         if (mark>0) {
             DataBaseTask task = new DataBaseTask();
             task.execute();
-            Toast.makeText(this, getString(R.string.save_info), Toast.LENGTH_SHORT).show();
         }
         else{
             Toast.makeText(this, getString(R.string.empty_exception), Toast.LENGTH_SHORT).show();
@@ -125,77 +126,13 @@ public class SubjectActivity extends AppCompatActivity implements TextView.OnEdi
         @Override
         protected void onPostExecute(Void results) {
             super.onPostExecute(results);
+            Toast.makeText(getApplicationContext(), getString(R.string.save_info), Toast.LENGTH_SHORT).show();
         }
-    }
 
-    private String getTime(){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
-
-    private int getArrayId(String subject){
-        String[] subjects=getResources().getStringArray(R.array.subjects);
-        if (subject.equals(subjects[0])){
-            return R.array.mresult;
+        private String getTime(){
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+            return dateFormat.format(date);
         }
-        if (subject.equals(subjects[1])){
-            return R.array.rresult;
-        }
-        if (subject.equals(subjects[2])){
-            return R.array.iresult;
-        }
-        if (subject.equals(subjects[3])){
-            return R.array.presult;
-        }
-        throw new Resources.NotFoundException();
-    }
-
-    private String checkProgress(int result){
-        if (result>=max){
-            return getString(R.string.good);
-        }
-        else{
-            if (result>min){
-                return getString(R.string.normal);
-            }
-            else{
-                return getString(R.string.low);
-            }
-        }
-    }
-
-    private int getMin(String subject){
-        String[] subjects=getResources().getStringArray(R.array.subjects);
-        if (subject.equals(subjects[0])){
-            return R.integer.minm;
-        }
-        if (subject.equals(subjects[1])){
-            return R.integer.minr;
-        }
-        if (subject.equals(subjects[2])){
-            return R.integer.mini;
-        }
-        if (subject.equals(subjects[3])){
-            return R.integer.minp;
-        }
-        throw new Resources.NotFoundException();
-    }
-
-    private int getMax(String subject){
-        String[] subjects=getResources().getStringArray(R.array.subjects);
-        if (subject.equals(subjects[0])){
-            return R.integer.maxm;
-        }
-        if (subject.equals(subjects[1])){
-            return R.integer.maxr;
-        }
-        if (subject.equals(subjects[2])){
-            return R.integer.maxi;
-        }
-        if (subject.equals(subjects[3])){
-            return R.integer.maxp;
-        }
-        throw new Resources.NotFoundException();
     }
 }

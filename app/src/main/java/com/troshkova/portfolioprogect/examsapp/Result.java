@@ -2,9 +2,6 @@ package com.troshkova.portfolioprogect.examsapp;
 
 import java.io.Serializable;
 
-/**
- * Created by asus-pc on 19.05.2017.
- */
 public class Result implements Serializable{
 
     private int mark;

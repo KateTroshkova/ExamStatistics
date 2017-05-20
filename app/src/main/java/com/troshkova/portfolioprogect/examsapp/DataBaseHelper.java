@@ -4,9 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by asus-pc on 18.05.2017.
- */
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME="results.db";
