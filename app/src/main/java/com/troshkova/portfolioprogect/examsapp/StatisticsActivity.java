@@ -4,23 +4,31 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
 
 public class StatisticsActivity extends AppCompatActivity {
 
-    private ArrayList<Result> results;
+    private ArrayList<Entry> marks;
     String subject;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
-        results=new ArrayList<>();
+        marks=new ArrayList<>();
         Intent intent=getIntent();
         subject=intent.getStringExtra(getString(R.string.subject_param));
         DataBaseTask task=new DataBaseTask();
@@ -42,6 +50,22 @@ public class StatisticsActivity extends AppCompatActivity {
             ListView list=(ListView)findViewById(R.id.listView2);
             ResultAdapter adapter =new ResultAdapter(getApplicationContext(), results);
             list.setAdapter(adapter);
+            for (int i = 0; i < results.size(); i++) {
+                //первый параметр - результат, второй-дата
+                marks.add(new Entry(i, results.get(i).getMark()));
+            }
+            if (marks.size()>0) {
+                LineDataSet dataSet = new LineDataSet(marks, "Label");
+                dataSet.setColor(Color.RED);
+                dataSet.setValueTextColor(Color.RED);
+                LineData lineData = new LineData(dataSet);
+                LineChart chart = (LineChart) findViewById(R.id.chart);
+                chart.setData(lineData);
+                chart.invalidate();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), getString(R.string.empty_exception), Toast.LENGTH_SHORT).show();
+            }
         }
 
         private ArrayList<Result> read(DataBaseHelper helper, SQLiteDatabase database){

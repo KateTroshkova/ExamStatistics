@@ -130,7 +130,7 @@ public class SubjectActivity extends AppCompatActivity implements TextView.OnEdi
         }
 
         private String getTime(){
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             Date date = new Date();
             return dateFormat.format(date);
         }
