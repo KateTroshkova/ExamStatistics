@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
+
 import java.util.ArrayList;
 
 public class ResultAdapter extends BaseAdapter {
@@ -44,6 +46,8 @@ public class ResultAdapter extends BaseAdapter {
         }
         ((TextView)layout.findViewById(R.id.textView3)).setText(context.getString(R.string.mark_info)+results.get(i).getMark());
         ((TextView)layout.findViewById(R.id.textView4)).setText(results.get(i).getDate());
+        CircularProgressBar currentProgress=(CircularProgressBar)layout.findViewById(R.id.progress_small);
+        currentProgress.setProgress(results.get(i).getMark());
         return layout;
     }
 }

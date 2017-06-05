@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.Toast;
@@ -33,7 +35,7 @@ public class StatisticsActivity extends AppCompatActivity {
         TabHost layout=(TabHost)findViewById(R.id.tabHost);
         layout.setup();
         TabHost.TabSpec screen1=layout.newTabSpec("screen1");
-        screen1.setIndicator("Информация");
+        screen1.setIndicator("история");
         screen1.setContent(R.id.linearLayout);
         layout.addTab(screen1);
 
@@ -63,26 +65,28 @@ public class StatisticsActivity extends AppCompatActivity {
             ListView list=(ListView)findViewById(R.id.listView2);
             ResultAdapter adapter =new ResultAdapter(getApplicationContext(), results);
             list.setAdapter(adapter);
-
+            PieChart pieChart = (PieChart) findViewById(R.id.piechart);
+            LineChart lineChart = (LineChart) findViewById(R.id.chart);
             try {
-                PieChart pieChart = (PieChart) findViewById(R.id.piechart);
+                pieChart = (PieChart) findViewById(R.id.piechart);
                 PieChartBuilder pieBuilder = new PieChartBuilder(getApplicationContext(), pieChart, results);
                 pieChart = pieBuilder.build();
                 pieChart.invalidate();
 
-                LineChart lineChart = (LineChart) findViewById(R.id.chart);
                 LineChartBuilder lineBuilder=new LineChartBuilder(getApplicationContext(), lineChart, results);
                 lineChart=lineBuilder.build();
                 lineChart.invalidate();
             }
             catch (EmptyStackException e) {
+                pieChart.setVisibility(View.INVISIBLE);
+                lineChart.setVisibility(View.INVISIBLE);
                 Toast.makeText(getApplicationContext(), getString(R.string.empty_exception), Toast.LENGTH_SHORT).show();
             }
         }
 
         private ArrayList<Result> read(DataBaseHelper helper, SQLiteDatabase database){
             ArrayList<Result> result=new ArrayList<>();
-            Cursor cursor=database.query(helper.TABLE_NAME, null, helper.COLUMN_SUBJECT+" = ?", new String[]{subject}, null, null, helper.COLUMN_DATE);
+            Cursor cursor=database.query(helper.TABLE_NAME, null, helper.COLUMN_SUBJECT+" = ?", new String[]{subject}, null, null, null);
             while(cursor.moveToNext()){
                 int mark=cursor.getInt(cursor.getColumnIndex(getString(R.string.mark_param)));
                 String date=cursor.getString(cursor.getColumnIndex(getString(R.string.date_param)));

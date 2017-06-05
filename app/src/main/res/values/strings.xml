@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ExamsApp</string>
+    <string name="app_name">Статистика ЕГЭ</string>
     <string-array name="subjects">
         <item>английский язык</item>
         <item>биология</item>

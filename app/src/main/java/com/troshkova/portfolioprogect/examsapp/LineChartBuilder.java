@@ -30,6 +30,7 @@ public class LineChartBuilder {
 
     public LineChart build(){
         lineChart.setData(getData());
+        lineChart.setDescription("");
         lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
@@ -49,7 +50,7 @@ public class LineChartBuilder {
     }
 
     private LineDataSet createDataSet(){
-        LineDataSet dataSet = new LineDataSet(entries, " ");
+        LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setColor(context.getResources().getColor(R.color.colorAccent));
         dataSet.setValueTextColor(Color.BLACK);
         return dataSet;

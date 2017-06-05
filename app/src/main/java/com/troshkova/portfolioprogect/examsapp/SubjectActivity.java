@@ -29,14 +29,14 @@ import java.util.GregorianCalendar;
 
 public class SubjectActivity extends AppCompatActivity implements TextView.OnEditorActionListener{
 
-    CircularProgressBar currentProgress;
-    EditText requestField;
-    TextView markInfo, readyInfo;
-    int[] results;
-    int min, max;
-    String subject;
-    int mark;
-    ResourceProvider resourceProvider;
+    private CircularProgressBar currentProgress;
+    private EditText requestField;
+    private TextView markInfo, readyInfo;
+    private int[] results;
+    private int min, max;
+    private String subject;
+    private int mark;
+    private ResourceProvider resourceProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -3,9 +3,6 @@ package com.troshkova.portfolioprogect.examsapp;
 import android.content.Context;
 import android.content.res.Resources;
 
-/**
- * Created by asus-pc on 20.05.2017.
- */
 public class ResourceProvider {
 
     private Context context;
