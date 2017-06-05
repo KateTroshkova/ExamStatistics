@@ -23,10 +23,27 @@ public class LineChartBuilder {
     private ArrayList<Entry> entries;
     private ArrayList<String> label;
 
-    public LineChartBuilder(Context context, LineChart lineChart, ArrayList<Result> results){
+    public LineChartBuilder(Context context, LineChart lineChart, ArrayList<Result> results, int start){
         this.context=context;
         this.lineChart=lineChart;
-        this.results=results;
+        this.results=new ArrayList<>();
+        if (start<0){
+            start=0;
+        }
+        if (start>=results.size()){
+            start=results.size()-10;
+        }
+        if (results.size()>=10) {
+            for (int i = start; i < start + 10; i++) {
+                this.results.add(results.get(i));
+            }
+        }
+        else{
+            for(int i=start; i<results.size(); i++){
+                this.results.add(results.get(i));
+            }
+        }
+        //this.results=results;
         readData();
     }
 

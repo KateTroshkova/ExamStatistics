@@ -26,11 +26,15 @@ import java.util.EmptyStackException;
 public class StatisticsActivity extends AppCompatActivity {
 
     private String subject;
+    private static ArrayList<Result> results;
+    private int start;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
+
+        results=new ArrayList<>();
 
         Intent intent=getIntent();
         subject=intent.getStringExtra(getString(R.string.subject_param));
@@ -39,22 +43,30 @@ public class StatisticsActivity extends AppCompatActivity {
 
         TabHost layout=(TabHost)findViewById(R.id.tabHost);
         layout.setup();
-        TabHost.TabSpec screen1=layout.newTabSpec("screen1");
-        screen1.setIndicator("история");
-        screen1.setContent(R.id.linearLayout);
-        layout.addTab(screen1);
-
-        TabHost.TabSpec screen2=layout.newTabSpec("screen2");
-        screen2.setIndicator("График");
-        screen2.setContent(R.id.linearLayout2);
-        layout.addTab(screen2);
-
-        TabHost.TabSpec screen3=layout.newTabSpec("screen3");
-        screen3.setIndicator("Диаграмма");
-        screen3.setContent(R.id.linearLayout3);
-        layout.addTab(screen3);
+        layout.addTab(createSpec(layout, "screen1", "История", R.id.linearLayout));
+        layout.addTab(createSpec(layout, "screen2", "График", R.id.linearLayout2));
+        layout.addTab(createSpec(layout, "screen3", "Диаграмма", R.id.linearLayout3));
     }
 
+    private TabHost.TabSpec createSpec(TabHost host, String tag, String indicator, int content){
+        return host.newTabSpec(tag).setIndicator(indicator).setContent(content);
+    }
+
+    public void next(View view){
+        start+=10;
+        if (start>=results.size()){
+            Toast.makeText(this, getString(R.string.last_exception), Toast.LENGTH_SHORT).show();
+        }
+        createLineChart(results, start);
+    }
+
+    public void previous(View view){
+        start-=10;
+        if (start<0){
+            Toast.makeText(this, getString(R.string.first_exception), Toast.LENGTH_SHORT).show();
+        }
+        createLineChart(results, start);
+    }
 
     private class DataBaseTask extends AsyncTask<Void, Integer, ArrayList<Result>> {
         @Override
@@ -67,6 +79,7 @@ public class StatisticsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final ArrayList<Result> results) {
             super.onPostExecute(results);
+            StatisticsActivity.results=results;
             ListView list=(ListView)findViewById(R.id.listView2);
             ResultAdapter adapter =new ResultAdapter(getApplicationContext(), results);
             list.setAdapter(adapter);
@@ -94,24 +107,12 @@ public class StatisticsActivity extends AppCompatActivity {
                 low.setText(getString(R.string.min) + min);
                 middle.setText(getString(R.string.middle) + (sum / results.size()));
             }
-
-            PieChart pieChart = (PieChart) findViewById(R.id.piechart);
-            LineChart lineChart = (LineChart) findViewById(R.id.chart);
-            try {
-                pieChart = (PieChart) findViewById(R.id.piechart);
-                PieChartBuilder pieBuilder = new PieChartBuilder(getApplicationContext(), pieChart, results);
-                pieChart = pieBuilder.build();
-                pieChart.invalidate();
-
-                LineChartBuilder lineBuilder=new LineChartBuilder(getApplicationContext(), lineChart, results);
-                lineChart=lineBuilder.build();
-                lineChart.invalidate();
-            }
-            catch (EmptyStackException e) {
-                pieChart.setVisibility(View.INVISIBLE);
-                lineChart.setVisibility(View.INVISIBLE);
-                Toast.makeText(getApplicationContext(), getString(R.string.empty_exception), Toast.LENGTH_SHORT).show();
-            }
+            start=results.size()-10;
+            //if (start<0){
+            //    start=0;
+           // }
+            createLineChart(results, start);
+            createPieChart(results);
         }
 
         private ArrayList<Result> read(DataBaseHelper helper, SQLiteDatabase database){
@@ -124,6 +125,33 @@ public class StatisticsActivity extends AppCompatActivity {
             }
             database.close();
             return result;
+        }
+    }
+
+    private void createPieChart(ArrayList<Result> results){
+        PieChart pieChart = (PieChart) findViewById(R.id.piechart);
+        try {
+            pieChart = (PieChart) findViewById(R.id.piechart);
+            PieChartBuilder pieBuilder = new PieChartBuilder(getApplicationContext(), pieChart, results);
+            pieChart = pieBuilder.build();
+            pieChart.invalidate();
+        }
+        catch (EmptyStackException e) {
+            pieChart.setVisibility(View.INVISIBLE);
+            Toast.makeText(getApplicationContext(), getString(R.string.empty_exception), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void createLineChart(ArrayList<Result> results, int start){
+        LineChart lineChart = (LineChart) findViewById(R.id.chart);
+        try{
+            LineChartBuilder lineBuilder=new LineChartBuilder(getApplicationContext(), lineChart, results, start);
+            lineChart=lineBuilder.build();
+            lineChart.invalidate();
+        }
+        catch (EmptyStackException e) {
+            lineChart.setVisibility(View.INVISIBLE);
+            Toast.makeText(getApplicationContext(), getString(R.string.empty_exception), Toast.LENGTH_SHORT).show();
         }
     }
 }

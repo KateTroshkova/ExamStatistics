@@ -685,6 +685,8 @@
     <string name="input_exception">Неверный формат ввода</string>
     <string name="subject_exception">Нет данных по предмету</string>
     <string name="empty_exception">Нет результата для сохранения</string>
+    <string name="last_exception">Это самые поздние результаты</string>
+    <string name="first_exception">Это самые ранние результаты</string>
     <string name="save_info">Сохранено</string>
     <string name="subject_param">subject</string>
     <string name="date_param">date</string>
@@ -701,4 +703,5 @@
     <string name="info_text">1). Данные приложения актуальны для 2017 года.\n
         2). Вы можете создать виджет отсчета дней до экзамена.\n
         3). Вы также можете включить напоминания на странице предмета.</string>
+    <string name="title_activity_statistics_out">StatisticsOut</string>
 </resources>

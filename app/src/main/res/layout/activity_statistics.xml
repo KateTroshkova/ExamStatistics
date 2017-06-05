@@ -65,10 +65,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fabNext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/fab_margin"
+                        android:src="@android:drawable/ic_media_next"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:onClick="next"/>
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fabPrev"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/fab_margin"
+                        android:src="@android:drawable/ic_media_previous"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:onClick="previous"/>
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/chart"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/fabNext"/>
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <LinearLayout
