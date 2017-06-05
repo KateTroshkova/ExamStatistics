@@ -11,11 +11,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EmptyStackException;
 
 public class StatisticsActivity extends AppCompatActivity {
@@ -65,6 +67,31 @@ public class StatisticsActivity extends AppCompatActivity {
             ListView list=(ListView)findViewById(R.id.listView2);
             ResultAdapter adapter =new ResultAdapter(getApplicationContext(), results);
             list.setAdapter(adapter);
+
+            TextView high=(TextView)findViewById(R.id.textView5);
+            TextView low=(TextView)findViewById(R.id.textView6);
+            TextView middle=(TextView)findViewById(R.id.textView7);
+
+            if (results.size()>0) {
+                int min=results.get(0).getMark();
+                int max=results.get(0).getMark();
+                float sum=0;
+
+                for(int i=0; i<results.size(); i++){
+                    if (min>results.get(i).getMark()){
+                        min=results.get(i).getMark();
+                    }
+                    if (max<results.get(i).getMark()){
+                        max=results.get(i).getMark();
+                    }
+                    sum+=results.get(i).getMark();
+                }
+
+                high.setText(getString(R.string.max) + max);
+                low.setText(getString(R.string.min) + min);
+                middle.setText(getString(R.string.middle) + (sum / results.size()));
+            }
+
             PieChart pieChart = (PieChart) findViewById(R.id.piechart);
             LineChart lineChart = (LineChart) findViewById(R.id.chart);
             try {

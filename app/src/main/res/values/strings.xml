@@ -694,4 +694,11 @@
     <string name="good">Высокая</string>
     <string name="normal">Средняя</string>
     <string name="low">Низкая</string>
+    <string name="info">Важная информация</string>
+    <string name="min">Худший результат</string>
+    <string name="max">Лучший результат</string>
+    <string name="middle">Среднее значение</string>
+    <string name="info_text">1). Данные приложения актуальны для 2017 года.\n
+        2). Вы можете создать виджет отсчета дней до экзамена.\n
+        3). Вы также можете включить напоминания на странице предмета.</string>
 </resources>
