@@ -1,4 +1,4 @@
-package com.troshkova.portfolioprogect.examsapp;
+package com.troshkova.portfolioprogect.examsapp.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -6,7 +6,6 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,6 +13,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.troshkova.portfolioprogect.examsapp.R;
 
 public class MainActivity extends AppCompatActivity {
 

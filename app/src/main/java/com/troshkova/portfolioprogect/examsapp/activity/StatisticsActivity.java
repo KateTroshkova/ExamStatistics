@@ -1,23 +1,26 @@
-package com.troshkova.portfolioprogect.examsapp;
+package com.troshkova.portfolioprogect.examsapp.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.troshkova.portfolioprogect.examsapp.database.DataBaseHelper;
+import com.troshkova.portfolioprogect.examsapp.chart.LineChartBuilder;
+import com.troshkova.portfolioprogect.examsapp.chart.PieChartBuilder;
+import com.troshkova.portfolioprogect.examsapp.R;
+import com.troshkova.portfolioprogect.examsapp.Result;
+import com.troshkova.portfolioprogect.examsapp.adapter.ResultAdapter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EmptyStackException;
 
 public class StatisticsActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.troshkova.portfolioprogect.examsapp;
+package com.troshkova.portfolioprogect.examsapp.activity;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -6,11 +6,8 @@ import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -19,13 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
+import com.troshkova.portfolioprogect.examsapp.database.DataBaseHelper;
+import com.troshkova.portfolioprogect.examsapp.R;
+import com.troshkova.portfolioprogect.examsapp.resource.ResourceProvider;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class SubjectActivity extends AppCompatActivity implements TextView.OnEditorActionListener{
 

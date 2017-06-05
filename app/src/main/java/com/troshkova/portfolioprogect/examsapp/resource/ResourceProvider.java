@@ -1,7 +1,9 @@
-package com.troshkova.portfolioprogect.examsapp;
+package com.troshkova.portfolioprogect.examsapp.resource;
 
 import android.content.Context;
 import android.content.res.Resources;
+
+import com.troshkova.portfolioprogect.examsapp.R;
 
 public class ResourceProvider {
 

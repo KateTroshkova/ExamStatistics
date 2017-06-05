@@ -1,4 +1,4 @@
-package com.troshkova.portfolioprogect.examsapp;
+package com.troshkova.portfolioprogect.examsapp.chart;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,6 +10,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.troshkova.portfolioprogect.examsapp.R;
+import com.troshkova.portfolioprogect.examsapp.Result;
 
 import java.util.ArrayList;
 

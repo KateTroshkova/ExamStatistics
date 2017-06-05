@@ -1,4 +1,4 @@
-package com.troshkova.portfolioprogect.examsapp;
+package com.troshkova.portfolioprogect.examsapp.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

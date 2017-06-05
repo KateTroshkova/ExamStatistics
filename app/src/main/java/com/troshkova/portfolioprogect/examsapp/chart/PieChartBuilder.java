@@ -1,4 +1,4 @@
-package com.troshkova.portfolioprogect.examsapp;
+package com.troshkova.portfolioprogect.examsapp.chart;
 
 import android.content.Context;
 
@@ -7,9 +7,11 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.troshkova.portfolioprogect.examsapp.R;
+import com.troshkova.portfolioprogect.examsapp.resource.ResourceProvider;
+import com.troshkova.portfolioprogect.examsapp.Result;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EmptyStackException;
 
 public class PieChartBuilder {

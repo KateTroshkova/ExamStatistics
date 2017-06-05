@@ -1,4 +1,4 @@
-package com.troshkova.portfolioprogect.examsapp;
+package com.troshkova.portfolioprogect.examsapp.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
+import com.troshkova.portfolioprogect.examsapp.R;
+import com.troshkova.portfolioprogect.examsapp.Result;
 
 import java.util.ArrayList;
 
