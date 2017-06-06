@@ -680,6 +680,18 @@
     <integer name="maxp">62</integer>
     <integer name="minp">32</integer>
 
+    <string name="mdate">2018:5:2</string>
+    <string name="rdate">2018:5:9</string>
+    <string name="idate">2018:4:29</string>
+    <string name="pdate">2018:5:7</string>
+    <string name="bdate">2018:5:13</string>
+    <string name="hdate">2018:5:19</string>
+    <string name="odate">2018:5:5</string>
+    <string name="cdate">2018:5:19</string>
+    <string name="adate">2018:5:13</string>
+    <string name="gdate">2018:4:29</string>
+    <string name="ldate">2018:5:7</string>
+
     <string name="title_activity_subject">SubjectActivity</string>
     <string name="hint">Введите первичный балл</string>
     <string name="input_exception">Неверный формат ввода</string>
@@ -687,6 +699,9 @@
     <string name="empty_exception">Нет результата для сохранения</string>
     <string name="last_exception">Это самые поздние результаты</string>
     <string name="first_exception">Это самые ранние результаты</string>
+    <string name="create_widget_exception">Выберете предмет</string>
+    <string name="preference_name">com.private_preference</string>
+    <string name="until_the_end">До экзамена </string>
     <string name="save_info">Сохранено</string>
     <string name="subject_param">subject</string>
     <string name="date_param">date</string>
@@ -704,4 +719,7 @@
         2). Вы можете создать виджет отсчета дней до экзамена.\n
         3). Вы также можете включить напоминания на странице предмета.</string>
     <string name="title_activity_statistics_out">StatisticsOut</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Создать!</string>
 </resources>

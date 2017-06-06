@@ -1,9 +1,12 @@
 package com.troshkova.portfolioprogect.examsapp.resource;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 
 import com.troshkova.portfolioprogect.examsapp.R;
+
+import java.util.GregorianCalendar;
 
 public class ResourceProvider {
 
@@ -127,6 +130,44 @@ public class ResourceProvider {
         throw new Resources.NotFoundException();
     }
 
+    private String getSubjectTime(String subject){
+        String[] subjects=context.getResources().getStringArray(R.array.subjects);
+        if (subject.equals(subjects[0])){
+            return context.getResources().getString(R.string.adate);
+        }
+        if (subject.equals(subjects[1])){
+            return context.getResources().getString(R.string.bdate);
+        }
+        if (subject.equals(subjects[2])){
+            return context.getResources().getString(R.string.gdate);
+        }
+        if (subject.equals(subjects[3])){
+            return context.getResources().getString(R.string.idate);
+        }
+        if (subject.equals(subjects[4])){
+            return context.getResources().getString(R.string.hdate);
+        }
+        if (subject.equals(subjects[5])){
+            return context.getResources().getString(R.string.ldate);
+        }
+        if (subject.equals(subjects[6])){
+            return context.getResources().getString(R.string.mdate);
+        }
+        if (subject.equals(subjects[7])){
+            return context.getResources().getString(R.string.odate);
+        }
+        if (subject.equals(subjects[8])){
+            return context.getResources().getString(R.string.rdate);
+        }
+        if (subject.equals(subjects[9])){
+            return context.getResources().getString(R.string.pdate);
+        }
+        if (subject.equals(subjects[10])){
+            return context.getResources().getString(R.string.cdate);
+        }
+        throw new Resources.NotFoundException();
+    }
+
     public String getProgressInfo(int result, int max, int min){
         if (result>=max){
             return context.getResources().getString(R.string.good);
@@ -139,5 +180,12 @@ public class ResourceProvider {
                 return context.getResources().getString(R.string.low);
             }
         }
+    }
+
+    public long getTime(String subject){
+        String time=getSubjectTime(subject);
+        String[] ymd=time.split(":");
+        return new GregorianCalendar(Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]), Integer.parseInt(ymd[2])).
+                getTime().getTime()/1000/3600/24;
     }
 }

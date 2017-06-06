@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="com.troshkova.portfolioprogect.examsapp.activity.CountdownWidgetConfigureActivity"
+    android:initialKeyguardLayout="@layout/countdown_widget"
+    android:initialLayout="@layout/countdown_widget"
+    android:minHeight="80dp"
+    android:minWidth="220dp"
+    android:previewImage="@drawable/preview"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="3600000"
+    android:widgetCategory="home_screen"></appwidget-provider>

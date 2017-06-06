@@ -27,24 +27,27 @@ public class LineChartBuilder {
         this.context=context;
         this.lineChart=lineChart;
         this.results=new ArrayList<>();
-        if (start<0){
-            start=0;
-        }
-        if (start>=results.size()){
-            start=results.size()-10;
-        }
-        if (results.size()>=10) {
-            for (int i = start; i < start + 10; i++) {
-                this.results.add(results.get(i));
+        if (results.size()>0) {
+            if (start>=results.size()){
+                start=results.size()-10;
             }
-        }
-        else{
-            for(int i=start; i<results.size(); i++){
-                this.results.add(results.get(i));
+            if (start<0){
+                start=0;
+            }
+            if (results.size() > start+10) {
+                for (int i = start; i < start + 10; i++) {
+                    this.results.add(results.get(i));
+                }
+            } else {
+                for (int i = start; i < results.size(); i++) {
+                    this.results.add(results.get(i));
+                }
             }
         }
         //this.results=results;
+
         readData();
+
     }
 
     public LineChart build(){

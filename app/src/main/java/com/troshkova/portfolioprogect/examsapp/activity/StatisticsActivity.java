@@ -53,19 +53,27 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     public void next(View view){
-        start+=10;
-        if (start>=results.size()){
+        if (start+10>=results.size()){
+            start=results.size()-10;
+            createLineChart(results, start);
             Toast.makeText(this, getString(R.string.last_exception), Toast.LENGTH_SHORT).show();
         }
-        createLineChart(results, start);
+        else {
+            start+=10;
+            createLineChart(results, start);
+        }
     }
 
     public void previous(View view){
-        start-=10;
-        if (start<0){
+        if (start-10<0){
+            start=0;
+            createLineChart(results, start);
             Toast.makeText(this, getString(R.string.first_exception), Toast.LENGTH_SHORT).show();
         }
-        createLineChart(results, start);
+        else {
+            start-=10;
+            createLineChart(results, start);
+        }
     }
 
     private class DataBaseTask extends AsyncTask<Void, Integer, ArrayList<Result>> {
@@ -108,9 +116,9 @@ public class StatisticsActivity extends AppCompatActivity {
                 middle.setText(getString(R.string.middle) + (sum / results.size()));
             }
             start=results.size()-10;
-            //if (start<0){
-            //    start=0;
-           // }
+            if (start<0){
+                start=0;
+            }
             createLineChart(results, start);
             createPieChart(results);
         }
