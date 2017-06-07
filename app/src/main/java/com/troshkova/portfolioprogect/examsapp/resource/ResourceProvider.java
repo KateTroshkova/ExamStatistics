@@ -12,6 +12,10 @@ public class ResourceProvider {
 
     private Context context;
 
+    private int[] images={R.drawable.english, R.drawable.biology, R.drawable.geography, R.drawable.it,
+    R.drawable.history, R.drawable.literature, R.drawable.math, R.drawable.society, R.drawable.russian,
+    R.drawable.phisics, R.drawable.chemistry};
+
     public ResourceProvider(Context context){
         this.context=context;
     }
@@ -187,5 +191,25 @@ public class ResourceProvider {
         String[] ymd=time.split(":");
         return new GregorianCalendar(Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]), Integer.parseInt(ymd[2])).
                 getTime().getTime()/1000/3600/24;
+    }
+
+    public int getImage(String subject){
+        String[] subjects=context.getResources().getStringArray(R.array.subjects);
+        for(int i=0; i<subjects.length; i++){
+            if (subject.equals(subjects[i])){
+                return images[i];
+            }
+        }
+        throw new Resources.NotFoundException();
+    }
+
+    public int getId(String subject){
+        String[] subjects=context.getResources().getStringArray(R.array.subjects);
+        for(int i=0; i<subjects.length; i++){
+            if (subject.equals(subjects[i])){
+                return i;
+            }
+        }
+        throw new Resources.NotFoundException();
     }
 }

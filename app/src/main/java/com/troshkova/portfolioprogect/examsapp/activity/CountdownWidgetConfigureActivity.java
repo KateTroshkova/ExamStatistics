@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
@@ -50,23 +51,27 @@ public class CountdownWidgetConfigureActivity extends Activity{
     }
 
     public void configure(View view){
-        if (list.getCheckedItemPosition()>0) {
-            ResourceProvider resourceProvider = new ResourceProvider(getApplicationContext());
-            SharedPreferences preferences=getSharedPreferences(getString(R.string.preference_name), MODE_PRIVATE);
-            SharedPreferences.Editor editor=preferences.edit();
-            String subject=getResources().getStringArray(R.array.subjects)[list.getCheckedItemPosition()];
-            editor.putString(mAppWidgetId+getString(R.string.subject_param), subject);
-            editor.putLong(mAppWidgetId+getString(R.string.date_param), resourceProvider.getTime(subject));
-            editor.commit();
+        try {
+            if (list.getCheckedItemPosition() > 0) {
+                ResourceProvider resourceProvider = new ResourceProvider(getApplicationContext());
+                SharedPreferences preferences = getSharedPreferences(getString(R.string.preference_name), MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                String subject = getResources().getStringArray(R.array.subjects)[list.getCheckedItemPosition()];
+                editor.putString(mAppWidgetId + getString(R.string.subject_param), subject);
+                editor.putLong(mAppWidgetId + getString(R.string.date_param), resourceProvider.getTime(subject));
+                editor.commit();
 
-            CountdownWidget.updateAppWidget(getApplicationContext(), AppWidgetManager.getInstance(this), mAppWidgetId);
-            Intent resultValue = new Intent();
-            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-            setResult(RESULT_OK, resultValue);
-            finish();
+                CountdownWidget.updateAppWidget(getApplicationContext(), AppWidgetManager.getInstance(this), mAppWidgetId);
+                Intent resultValue = new Intent();
+                resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+                setResult(RESULT_OK, resultValue);
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(), getString(R.string.create_widget_exception), Toast.LENGTH_SHORT).show();
+            }
         }
-        else{
-            Toast.makeText(getApplicationContext(), getString(R.string.create_widget_exception), Toast.LENGTH_SHORT).show();
+        catch(Resources.NotFoundException e){
+            Toast.makeText(this, getString(R.string.subject_exception), Toast.LENGTH_SHORT).show();
         }
     }
 }

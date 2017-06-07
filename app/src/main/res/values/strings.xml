@@ -694,6 +694,10 @@
 
     <string name="title_activity_subject">SubjectActivity</string>
     <string name="hint">Введите первичный балл</string>
+    <string name="time_hint">Выберете время</string>
+    <string name="add">Создать</string>
+    <string name="cancel">Отмена</string>
+    <string name="delete">Удалить напоминания</string>
     <string name="input_exception">Неверный формат ввода</string>
     <string name="subject_exception">Нет данных по предмету</string>
     <string name="empty_exception">Нет результата для сохранения</string>
@@ -701,6 +705,8 @@
     <string name="first_exception">Это самые ранние результаты</string>
     <string name="create_widget_exception">Выберете предмет</string>
     <string name="preference_name">com.private_preference</string>
+    <string name="notification_text">Экзамены приближаются.</string>
+    <string name="sub_notification_text">Самое время для подготовки!</string>
     <string name="until_the_end">До экзамена </string>
     <string name="save_info">Сохранено</string>
     <string name="subject_param">subject</string>
@@ -712,6 +718,7 @@
     <string name="normal">Средняя</string>
     <string name="low">Низкая</string>
     <string name="info">Важная информация</string>
+    <string name="notification">Напоминание</string>
     <string name="min">Худший результат</string>
     <string name="max">Лучший результат</string>
     <string name="middle">Среднее значение</string>

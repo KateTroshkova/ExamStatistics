@@ -18,10 +18,10 @@
         <activity
             android:name=".activity.SubjectActivity"
             android:label=" "
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.StatisticsActivity"
-            android:label=" "></activity>
+            android:label=" " />
 
         <receiver android:name=".widget.CountdownWidget">
             <intent-filter>
@@ -38,6 +38,11 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
     </application>
 
 </manifest>
