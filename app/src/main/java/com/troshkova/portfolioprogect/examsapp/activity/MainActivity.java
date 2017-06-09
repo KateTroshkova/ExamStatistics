@@ -1,8 +1,5 @@
 package com.troshkova.portfolioprogect.examsapp.activity;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,10 +11,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.troshkova.portfolioprogect.examsapp.dialog.InfoDialog;
 import com.troshkova.portfolioprogect.examsapp.R;
 
 public class MainActivity extends AppCompatActivity {
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,17 +51,6 @@ public class MainActivity extends AppCompatActivity {
             default:{
                 return false;
             }
-        }
-    }
-
-    private class InfoDialog extends DialogFragment {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle(getString(R.string.info));
-            builder.setMessage(getString(R.string.info_text));
-            return builder.create();
         }
     }
 }
