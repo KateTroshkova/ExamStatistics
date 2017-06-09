@@ -1,6 +1,7 @@
 package com.troshkova.portfolioprogect.examsapp.activity;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,12 +76,16 @@ public class SubjectActivity extends AppCompatActivity implements TextView.OnEdi
                         .setText(getString(R.string.mark_info)+mark);
                 ((TextView)findViewById(R.id.user_ready_text))
                         .setText(getString(R.string.ready_info)+resourceProvider.getProgressInfo(subject, mark));
+                hideKeyboard();
             }
             catch(NumberFormatException e){
                 Toast.makeText(this, getString(R.string.input_exception), Toast.LENGTH_SHORT).show();
             }
             catch (ArrayIndexOutOfBoundsException e){
                 Toast.makeText(this, getString(R.string.input_exception), Toast.LENGTH_SHORT).show();
+            }
+            catch(NullPointerException e){
+                //keyboard without focus
             }
         }
         return true;
@@ -93,6 +99,11 @@ public class SubjectActivity extends AppCompatActivity implements TextView.OnEdi
         else{
             Toast.makeText(this, getString(R.string.empty_exception), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void hideKeyboard(){
+        InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     private class DataBaseTask extends AsyncTask<Void, Integer, Void> {
