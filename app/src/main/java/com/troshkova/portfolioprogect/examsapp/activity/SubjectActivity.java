@@ -27,12 +27,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
-import com.troshkova.portfolioprogect.examsapp.AlarmReceiver;
+import com.troshkova.portfolioprogect.examsapp.receiver.AlarmReceiver;
 import com.troshkova.portfolioprogect.examsapp.database.DataBaseHelper;
 import com.troshkova.portfolioprogect.examsapp.R;
 import com.troshkova.portfolioprogect.examsapp.resource.ResourceProvider;
 
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,57 +41,48 @@ public class SubjectActivity extends AppCompatActivity implements TextView.OnEdi
 
     private CircularProgressBar currentProgress;
     private EditText requestField;
-    private TextView markInfo, readyInfo;
     private int[] results;
-    private int min, max;
     private String subject;
     private int mark;
-    private ResourceProvider resourceProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject);
-
-        resourceProvider=new ResourceProvider(getApplicationContext());
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        subject=getIntent().getStringExtra(getString(R.string.subject_param));
+        ((TextView)findViewById(R.id.subject_name_text)).setText(subject);
+        requestField=(EditText)findViewById(R.id.user_request_edit_text);
+        requestField.setOnEditorActionListener(this);
+        currentProgress=(CircularProgressBar)findViewById(R.id.progress);
+        currentProgress.setProgress(0);
+    }
 
-        Intent intent=getIntent();
-        subject=intent.getStringExtra(getString(R.string.subject_param));
+    @Override
+    protected void onResume(){
+        super.onResume();
+        ResourceProvider resourceProvider=new ResourceProvider(getApplicationContext());
         try {
             results = resourceProvider.getSubjectResultArray(subject);
-            min=resourceProvider.getMin(subject);
-            max=resourceProvider.getMax(subject);
         }
         catch (Resources.NotFoundException e){
             Toast.makeText(this, getString(R.string.subject_exception), Toast.LENGTH_SHORT).show();
             finish();
         }
-
-        TextView actionBarInfo=(TextView)findViewById(R.id.info);
-        actionBarInfo.setText(subject);
-
-        requestField=(EditText)findViewById(R.id.editText);
-        requestField.setOnEditorActionListener(this);
-
-        currentProgress=(CircularProgressBar)findViewById(R.id.progress);
-        currentProgress.setProgress(0);
-
-        markInfo=(TextView)findViewById(R.id.textView);
-        readyInfo=(TextView)findViewById(R.id.textView2);
     }
 
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        ResourceProvider resourceProvider=new ResourceProvider(getApplicationContext());
         if (i==EditorInfo.IME_ACTION_GO){
             try {
-                int request = Integer.parseInt(requestField.getText().toString());
-                mark=results[request];
+                mark=results[Integer.parseInt(requestField.getText().toString())];
                 currentProgress.setProgressWithAnimation(mark, 2000);
-                markInfo.setText(getString(R.string.mark_info)+mark);
-                readyInfo.setText(getString(R.string.ready_info)+resourceProvider.getProgressInfo(mark, max, min));
+                ((TextView)findViewById(R.id.user_result_text))
+                        .setText(getString(R.string.mark_info)+mark);
+                ((TextView)findViewById(R.id.user_ready_text))
+                        .setText(getString(R.string.ready_info)+resourceProvider.getProgressInfo(subject, mark));
             }
             catch(NumberFormatException e){
                 Toast.makeText(this, getString(R.string.input_exception), Toast.LENGTH_SHORT).show();
@@ -124,7 +114,8 @@ public class SubjectActivity extends AppCompatActivity implements TextView.OnEdi
             values.put(getString(R.string.mark_param), mark);
             values.put(getString(R.string.subject_param), subject);
             values.put(getString(R.string.date_param), getTime());
-            database.insert(helper.TABLE_NAME, null, values);
+            database.insert(DataBaseHelper.TABLE_NAME, null, values);
+            database.close();
             return null;
         }
 
@@ -184,42 +175,13 @@ public class SubjectActivity extends AppCompatActivity implements TextView.OnEdi
             builder.setPositiveButton(getString(R.string.add), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis(System.currentTimeMillis());
-                    calendar.set(Calendar.HOUR_OF_DAY, hour);
-                    calendar.set(Calendar.MINUTE, minute);
-                    calendar.set(Calendar.SECOND, 0);
-                    Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-                    intent.putExtra(getString(R.string.subject_param), subject);
-                    int code=0;
-                    try {
-                        ResourceProvider provider = new ResourceProvider(SubjectActivity.this);
-                        code=provider.getId(subject);
-                    }
-                    catch (Resources.NotFoundException e){
-                        code=0;
-                    }
-                    PendingIntent alarmIntent = PendingIntent.getBroadcast(SubjectActivity.this, code, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-                    AlarmManager manager=(AlarmManager)getSystemService(ALARM_SERVICE);
-                    manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                            AlarmManager.INTERVAL_DAY, alarmIntent);
+                    setAlarm();
                 }
             });
             builder.setNeutralButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    int code=0;
-                    try {
-                        ResourceProvider provider = new ResourceProvider(SubjectActivity.this);
-                        code=provider.getId(subject);
-                    }
-                    catch (Resources.NotFoundException e){
-                        code=0;
-                    }
-                    Intent intent = new Intent(SubjectActivity.this, AlarmReceiver.class);
-                    PendingIntent cancelIntent = PendingIntent.getBroadcast(SubjectActivity.this, code, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-                    AlarmManager manager=(AlarmManager)getSystemService(ALARM_SERVICE);
-                    manager.cancel(cancelIntent);
+                    cancelAlarm();
                 }
             });
             return builder.create();
@@ -229,6 +191,43 @@ public class SubjectActivity extends AppCompatActivity implements TextView.OnEdi
         public void onTimeChanged(TimePicker timePicker, int i, int i1) {
             hour=i;
             minute=i1;
+        }
+
+        private void setAlarm(){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
+            calendar.set(Calendar.MINUTE, minute);
+            calendar.set(Calendar.SECOND, 0);
+            Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+            intent.putExtra(getString(R.string.subject_param), subject);
+            int id;
+            try {
+                ResourceProvider resourceProvider = new ResourceProvider(SubjectActivity.this);
+                id=resourceProvider.getId(subject);
+            }
+            catch (Resources.NotFoundException e){
+                id=42;
+            }
+            PendingIntent alarmIntent = PendingIntent.getBroadcast(SubjectActivity.this, id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            AlarmManager manager=(AlarmManager)getSystemService(ALARM_SERVICE);
+            manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY, alarmIntent);
+        }
+
+        private void cancelAlarm(){
+            int id;
+            try {
+                ResourceProvider resourceProvider = new ResourceProvider(SubjectActivity.this);
+                id=resourceProvider.getId(subject);
+            }
+            catch (Resources.NotFoundException e){
+                id=42;
+            }
+            Intent intent = new Intent(SubjectActivity.this, AlarmReceiver.class);
+            PendingIntent cancelIntent = PendingIntent.getBroadcast(SubjectActivity.this, id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            AlarmManager manager=(AlarmManager)getSystemService(ALARM_SERVICE);
+            manager.cancel(cancelIntent);
         }
     }
 }

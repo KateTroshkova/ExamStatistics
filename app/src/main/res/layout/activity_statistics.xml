@@ -32,7 +32,7 @@
                 android:layout_height="match_parent">
 
                 <LinearLayout
-                    android:id="@+id/linearLayout"
+                    android:id="@+id/history_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -40,70 +40,74 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView7" />
+                        android:id="@+id/middle_value_text" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView6" />
+                        android:id="@+id/min_value_text" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView5" />
+                        android:id="@+id/max_value_text" />
 
                     <ListView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/listView2"
+                        android:id="@+id/history_listview"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/linearLayout2"
+                    android:id="@+id/line_chart_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
-                    <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/fabNext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/fab_margin"
-                        android:src="@android:drawable/ic_media_next"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentBottom="true"
-                        android:onClick="next"/>
 
-                    <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/fabPrev"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/fab_margin"
-                        android:src="@android:drawable/ic_media_previous"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentBottom="true"
-                        android:onClick="previous"/>
-                    <com.github.mikephil.charting.charts.LineChart
-                        android:id="@+id/chart"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_above="@+id/fabNext"/>
+                        <android.support.design.widget.FloatingActionButton
+                            android:id="@+id/next"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/fab_margin"
+                            android:src="@android:drawable/ic_media_next"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:onClick="next"/>
+
+                        <android.support.design.widget.FloatingActionButton
+                            android:id="@+id/previous"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/fab_margin"
+                            android:src="@android:drawable/ic_media_previous"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentBottom="true"
+                            android:onClick="previous"/>
+
+                        <com.github.mikephil.charting.charts.LineChart
+                            android:id="@+id/line_chart"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_above="@+id/next"/>
                     </RelativeLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/linearLayout3"
+                    android:id="@+id/pie_chart_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+
                     <com.github.mikephil.charting.charts.PieChart
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/piechart"/>
+                        android:id="@+id/pie_chart"/>
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

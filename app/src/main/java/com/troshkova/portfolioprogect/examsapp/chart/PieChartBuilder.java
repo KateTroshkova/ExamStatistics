@@ -18,7 +18,6 @@ public class PieChartBuilder {
 
     private PieChart pieChart;
     private Context context;
-    private ResourceProvider provider;
     private ArrayList<Result> results;
     private int good, normal, low;
 
@@ -26,7 +25,6 @@ public class PieChartBuilder {
         this.context=context;
         this.pieChart=pieChart;
         this.results=results;
-        provider=new ResourceProvider(context);
         readData();
     }
 
@@ -59,18 +57,17 @@ public class PieChartBuilder {
     }
 
     private void readData() throws EmptyStackException{
+        ResourceProvider resourceProvider=new ResourceProvider(context);
         if (results.size()>0) {
             String subject=results.get(0).getSubject();
-            int min = provider.getMin(subject);
-            int max = provider.getMax(subject);
             for (int i = 0; i < results.size(); i++) {
-                if (provider.getProgressInfo(results.get(i).getMark(), max, min).equals(context.getString(R.string.good))) {
+                if (resourceProvider.getProgressInfo(subject, results.get(i).getMark()).equals(context.getString(R.string.good))) {
                     good++;
                 }
-                if (provider.getProgressInfo(results.get(i).getMark(), max, min).equals(context.getString(R.string.normal))) {
+                if (resourceProvider.getProgressInfo(subject, results.get(i).getMark()).equals(context.getString(R.string.normal))) {
                     normal++;
                 }
-                if (provider.getProgressInfo(results.get(i).getMark(), max, min).equals(context.getString(R.string.low))) {
+                if (resourceProvider.getProgressInfo(subject, results.get(i).getMark()).equals(context.getString(R.string.low))) {
                     low++;
                 }
             }

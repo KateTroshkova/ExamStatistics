@@ -1,6 +1,5 @@
 package com.troshkova.portfolioprogect.examsapp.activity;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -26,7 +25,7 @@ import java.util.EmptyStackException;
 public class StatisticsActivity extends AppCompatActivity {
 
     private String subject;
-    private static ArrayList<Result> results;
+    private ArrayList<Result> results;
     private int start;
 
     @Override
@@ -36,16 +35,16 @@ public class StatisticsActivity extends AppCompatActivity {
 
         results=new ArrayList<>();
 
-        Intent intent=getIntent();
-        subject=intent.getStringExtra(getString(R.string.subject_param));
+        subject=getIntent().getStringExtra(getString(R.string.subject_param));
+
         DataBaseTask task=new DataBaseTask();
         task.execute();
 
         TabHost layout=(TabHost)findViewById(R.id.tabHost);
         layout.setup();
-        layout.addTab(createSpec(layout, "screen1", "История", R.id.linearLayout));
-        layout.addTab(createSpec(layout, "screen2", "График", R.id.linearLayout2));
-        layout.addTab(createSpec(layout, "screen3", "Диаграмма", R.id.linearLayout3));
+        layout.addTab(createSpec(layout, "screen1", "История", R.id.history_layout));
+        layout.addTab(createSpec(layout, "screen2", "График", R.id.line_chart_layout));
+        layout.addTab(createSpec(layout, "screen3", "Диаграмма", R.id.pie_chart_layout));
     }
 
     private TabHost.TabSpec createSpec(TabHost host, String tag, String indicator, int content){
@@ -53,93 +52,64 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     public void next(View view){
-        if (start+10>=results.size()){
-            start=results.size()-10;
-            createLineChart(results, start);
+        start+=10;
+        createLineChart(results, start);
+        if (start>=results.size()){
             Toast.makeText(this, getString(R.string.last_exception), Toast.LENGTH_SHORT).show();
-        }
-        else {
-            start+=10;
-            createLineChart(results, start);
         }
     }
 
     public void previous(View view){
-        if (start-10<0){
-            start=0;
-            createLineChart(results, start);
+        start-=10;
+        createLineChart(results, start);
+        if (start<0){
             Toast.makeText(this, getString(R.string.first_exception), Toast.LENGTH_SHORT).show();
-        }
-        else {
-            start-=10;
-            createLineChart(results, start);
         }
     }
 
     private class DataBaseTask extends AsyncTask<Void, Integer, ArrayList<Result>> {
+
         @Override
         protected ArrayList<Result> doInBackground(Void... voids) {
-            DataBaseHelper helper=new DataBaseHelper(getApplicationContext());
-            SQLiteDatabase database=helper.getWritableDatabase();
-            return read(helper, database);
+            return read();
         }
 
         @Override
-        protected void onPostExecute(final ArrayList<Result> results) {
-            super.onPostExecute(results);
-            StatisticsActivity.results=results;
-            ListView list=(ListView)findViewById(R.id.listView2);
-            ResultAdapter adapter =new ResultAdapter(getApplicationContext(), results);
-            list.setAdapter(adapter);
-
-            TextView high=(TextView)findViewById(R.id.textView5);
-            TextView low=(TextView)findViewById(R.id.textView6);
-            TextView middle=(TextView)findViewById(R.id.textView7);
-
+        protected void onPostExecute(final ArrayList<Result> data) {
+            super.onPostExecute(data);
+            results=data;
+            createHistoryList();
             if (results.size()>0) {
-                int min=results.get(0).getMark();
-                int max=results.get(0).getMark();
-                float sum=0;
-
-                for(int i=0; i<results.size(); i++){
-                    if (min>results.get(i).getMark()){
-                        min=results.get(i).getMark();
-                    }
-                    if (max<results.get(i).getMark()){
-                        max=results.get(i).getMark();
-                    }
-                    sum+=results.get(i).getMark();
-                }
-
-                high.setText(getString(R.string.max) + max);
-                low.setText(getString(R.string.min) + min);
-                middle.setText(getString(R.string.middle) + (sum / results.size()));
+                ((TextView)findViewById(R.id.max_value_text)).
+                        setText(getString(R.string.max) + getMaxResult());
+                ((TextView)findViewById(R.id.min_value_text)).
+                        setText(getString(R.string.min) + getMinResult());
+                ((TextView)findViewById(R.id.middle_value_text)).
+                        setText(getString(R.string.middle) + getAverageValue());
             }
-            start=results.size()-10;
-            if (start<0){
-                start=0;
-            }
-            createLineChart(results, start);
+            createLineChart(results, results.size()-10);
             createPieChart(results);
         }
 
-        private ArrayList<Result> read(DataBaseHelper helper, SQLiteDatabase database){
+        private ArrayList<Result> read(){
+            DataBaseHelper helper=new DataBaseHelper(getApplicationContext());
+            SQLiteDatabase database=helper.getWritableDatabase();
             ArrayList<Result> result=new ArrayList<>();
-            Cursor cursor=database.query(helper.TABLE_NAME, null, helper.COLUMN_SUBJECT+" = ?", new String[]{subject}, null, null, null);
+            Cursor cursor=database.query(DataBaseHelper.TABLE_NAME, null, DataBaseHelper.COLUMN_SUBJECT +" = ?", new String[]{subject}, null, null, null);
             while(cursor.moveToNext()){
                 int mark=cursor.getInt(cursor.getColumnIndex(getString(R.string.mark_param)));
                 String date=cursor.getString(cursor.getColumnIndex(getString(R.string.date_param)));
                 result.add(new Result(mark, subject, date));
             }
             database.close();
+            cursor.close();
             return result;
         }
     }
 
     private void createPieChart(ArrayList<Result> results){
-        PieChart pieChart = (PieChart) findViewById(R.id.piechart);
+        PieChart pieChart = (PieChart) findViewById(R.id.pie_chart);
         try {
-            pieChart = (PieChart) findViewById(R.id.piechart);
             PieChartBuilder pieBuilder = new PieChartBuilder(getApplicationContext(), pieChart, results);
             pieChart = pieBuilder.build();
             pieChart.invalidate();
@@ -151,7 +121,7 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void createLineChart(ArrayList<Result> results, int start){
-        LineChart lineChart = (LineChart) findViewById(R.id.chart);
+        LineChart lineChart = (LineChart) findViewById(R.id.line_chart);
         try{
             LineChartBuilder lineBuilder=new LineChartBuilder(getApplicationContext(), lineChart, results, start);
             lineChart=lineBuilder.build();
@@ -161,5 +131,39 @@ public class StatisticsActivity extends AppCompatActivity {
             lineChart.setVisibility(View.INVISIBLE);
             Toast.makeText(getApplicationContext(), getString(R.string.empty_exception), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void createHistoryList(){
+        ListView list=(ListView)findViewById(R.id.history_listview);
+        ResultAdapter adapter = new ResultAdapter(getApplicationContext(), results);
+        list.setAdapter(adapter);
+    }
+
+    private int getMinResult(){
+        int min=results.get(0).getMark();
+        for(int i=0; i<results.size(); i++){
+            if (min>results.get(i).getMark()){
+                min=results.get(i).getMark();
+            }
+        }
+        return min;
+    }
+
+    private int getMaxResult(){
+        int max=results.get(0).getMark();
+        for(int i=0; i<results.size(); i++){
+            if (max<results.get(i).getMark()){
+                max=results.get(i).getMark();
+            }
+        }
+        return max;
+    }
+
+    private float getAverageValue(){
+        float sum=0;
+        for(int i=0; i<results.size(); i++){
+            sum+=results.get(i).getMark();
+        }
+        return sum/results.size();
     }
 }

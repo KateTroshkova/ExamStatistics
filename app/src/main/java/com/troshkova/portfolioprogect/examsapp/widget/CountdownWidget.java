@@ -7,24 +7,26 @@ import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
 import com.troshkova.portfolioprogect.examsapp.R;
-import com.troshkova.portfolioprogect.examsapp.activity.CountdownWidgetConfigureActivity;
 
-import java.util.Date;
-
-/**
- * Implementation of App Widget functionality.
- * App Widget Configuration implemented in {@link CountdownWidgetConfigureActivity CountdownWidgetConfigureActivity}
- */
 public class CountdownWidget extends AppWidgetProvider {
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        SharedPreferences preferences=context.getSharedPreferences(context.getString(R.string.preference_name), Context.MODE_PRIVATE);
+
+        SharedPreferences preferences=context.getSharedPreferences(
+                context.getString(R.string.preference_name), Context.MODE_PRIVATE);
+
+        String subject=preferences.getString(appWidgetId+context.getString(R.string.subject_param), "");
+        long days=preferences.getLong(appWidgetId+context.getString(R.string.date_param), 0)
+                -System.currentTimeMillis()/1000/3600/24;
+
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.countdown_widget);
-        views.setTextViewText(R.id.textView8, preferences.getString(appWidgetId+context.getString(R.string.subject_param), ""));
-        long days=preferences.getLong(appWidgetId+context.getString(R.string.date_param), 0);
-        Date currentDate=new Date(System.currentTimeMillis());
-        days=days-currentDate.getTime()/1000/3600/24;
-        views.setTextViewText(R.id.textView9, context.getString(R.string.until_the_end)+"\n"+days+" "+getCorrectWord(days));
+        views.setTextViewText(R.id.subject_name_text, subject);
+        if (days>0) {
+            views.setTextViewText(R.id.time_text, context.getString(R.string.until_the_end) + "\n" + days + " " + getCorrectWord(days));
+        }
+        else{
+            views.setTextViewText(R.id.time_text, context.getString(R.string.too_late));
+        }
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 

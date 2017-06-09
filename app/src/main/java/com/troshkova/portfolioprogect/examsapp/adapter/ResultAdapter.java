@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -46,8 +45,9 @@ public class ResultAdapter extends BaseAdapter {
             LayoutInflater inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             layout=inflater.inflate(R.layout.result_item, null);
         }
-        ((TextView)layout.findViewById(R.id.textView3)).setText(context.getString(R.string.mark_info)+results.get(i).getMark());
-        ((TextView)layout.findViewById(R.id.textView4)).setText(results.get(i).getDate());
+        ((TextView)layout.findViewById(R.id.user_result_text)).setText(
+                context.getString(R.string.mark_info)+results.get(i).getMark());
+        ((TextView)layout.findViewById(R.id.date_of_result_text)).setText(results.get(i).getDate());
         CircularProgressBar currentProgress=(CircularProgressBar)layout.findViewById(R.id.progress_small);
         currentProgress.setProgress(results.get(i).getMark());
         return layout;

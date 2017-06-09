@@ -27,27 +27,8 @@ public class LineChartBuilder {
         this.context=context;
         this.lineChart=lineChart;
         this.results=new ArrayList<>();
-        if (results.size()>0) {
-            if (start>=results.size()){
-                start=results.size()-10;
-            }
-            if (start<0){
-                start=0;
-            }
-            if (results.size() > start+10) {
-                for (int i = start; i < start + 10; i++) {
-                    this.results.add(results.get(i));
-                }
-            } else {
-                for (int i = start; i < results.size(); i++) {
-                    this.results.add(results.get(i));
-                }
-            }
-        }
-        //this.results=results;
-
+        selectData(results, start);
         readData();
-
     }
 
     public LineChart build(){
@@ -61,7 +42,6 @@ public class LineChartBuilder {
 
             @Override
             public void onNothingSelected() {
-
             }
         });
         return lineChart;
@@ -73,17 +53,38 @@ public class LineChartBuilder {
 
     private LineDataSet createDataSet(){
         LineDataSet dataSet = new LineDataSet(entries, "");
-        dataSet.setColor(context.getResources().getColor(R.color.colorAccent));
+        dataSet.setColor(R.color.colorAccent);
         dataSet.setValueTextColor(Color.BLACK);
         return dataSet;
     }
 
     private void readData(){
-        entries=new ArrayList<Entry>();
+        entries=new ArrayList<>();
         label=new ArrayList<>();
         for(int i=0; i<results.size(); i++){
             entries.add(new Entry(results.get(i).getMark(), i));
             label.add("");
+        }
+    }
+
+    private void selectData(ArrayList<Result> results, int start){
+        int length = 10;
+        if (results.size()>0) {
+            if (start>=results.size()){
+                start=results.size()- length;
+            }
+            if (start<0){
+                start=0;
+            }
+            if (results.size() > start+ length) {
+                for (int i = start; i < start + length; i++) {
+                    this.results.add(results.get(i));
+                }
+            } else {
+                for (int i = start; i < results.size(); i++) {
+                    this.results.add(results.get(i));
+                }
+            }
         }
     }
 }
