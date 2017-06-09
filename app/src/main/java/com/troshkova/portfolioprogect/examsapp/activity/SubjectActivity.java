@@ -70,7 +70,7 @@ public class SubjectActivity extends AppCompatActivity implements TextView.OnEdi
             try {
                 mark=results[Integer.parseInt(requestField.getText().toString())];
                 currentProgress.setProgressWithAnimation(mark, 2000);
-                ((TextView)findViewById(R.id.user_result_text))
+                ((TextView)findViewById(R.id.result_mark_text))
                         .setText(getString(R.string.mark_info)+mark);
                 ((TextView)findViewById(R.id.user_ready_text))
                         .setText(getString(R.string.ready_info)+resourceProvider.getProgressInfo(subject, mark));
